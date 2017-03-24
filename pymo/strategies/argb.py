@@ -1,14 +1,13 @@
 import numpy as np
 
 
-def _shortest_distance_index(average_rgb, average_rgbs):
-    avg = average_rgb
+def _shortest_distance_index(target_rgb, candidate_rgbs):
     min_index = 0
     min_dist = float("inf")
-    for i, val in enumerate(average_rgbs):
-        dist = ((val[0] - avg[0]) * (val[0] - avg[0]) +
-                (val[1] - avg[1]) * (val[1] - avg[1]) +
-                (val[2] - avg[2]) * (val[2] - avg[2]))
+    for i, val in enumerate(candidate_rgbs):
+        dist = ((val[0] - target_rgb[0]) * (val[0] - target_rgb[0]) +
+                (val[1] - target_rgb[1]) * (val[1] - target_rgb[1]) +
+                (val[2] - target_rgb[2]) * (val[2] - target_rgb[2]))
         if dist < min_dist:
             min_dist = dist
             min_index = i
@@ -17,8 +16,8 @@ def _shortest_distance_index(average_rgb, average_rgbs):
 
 def _average_rgb(image):
     image_array = np.array(image)
-    w, h, d = image_array.shape
-    return tuple(np.average(image_array.reshape(w * h, d), axis=0))
+    width, height, depth = image_array.shape
+    return tuple(np.average(image_array.reshape(width * height, depth), axis=0))
 
 
 def argb(input_tiles, input_images, reuse_images=True):
@@ -36,7 +35,7 @@ def argb(input_tiles, input_images, reuse_images=True):
         outputs.append(input_images[match_index])
 
         if i % batch_size is 0:
-            print('processed %d of %d...' % (i, input_length))
+            print('Processed %d of %d...' % (i, input_length))
 
         if not reuse_images:
             input_images.remove(match_index)
