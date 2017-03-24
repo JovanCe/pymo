@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser.add_argument('--grid-rows', dest='grid_rows', required=True)
     parser.add_argument('--grid-cols', dest='grid_cols', required=True)
     parser.add_argument('--output', dest='output', required=True)
-    parser.add_argument('--strategy', dest='strategy', required=True, default='argb')
+    parser.add_argument('--strategy', dest='strategy', default='argb')
 
     args = parser.parse_args()
 
