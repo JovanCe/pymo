@@ -1,0 +1,6 @@
+pymo_env/
+test/
+
+.idea/
+*.iml
+*.pyc
