@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.neighbors import KDTree
 
 
 def rgb_to_lab(input_rgb):
@@ -31,30 +30,8 @@ def rgb_to_lab(input_rgb):
     return [round(116 * xyz[1] - 16, 4), round(500 * (xyz[0] - xyz[1]), 4), round(200 * (xyz[1] - xyz[2]), 4)]
 
 
-def _average_lab(image):
+def average_lab(image):
     image_array = np.array(image)
     width, height, depth = image_array.shape
     image_array = np.apply_along_axis(rgb_to_lab, 1, image_array.reshape(width * height, depth))
     return tuple(np.average(image_array, axis=0))
-
-
-def alab(input_tiles, input_images, reuse_images=True):
-    candidates = []
-    outputs = []
-    input_length = len(input_tiles)
-    batch_size = int(input_length / 10)
-
-    for img in input_images:
-        candidates.append(_average_lab(img))
-
-    rgb_tree = KDTree(np.array(candidates))
-
-    for i, tile in enumerate(input_tiles):
-        target = _average_lab(tile)
-        match_index = rgb_tree.query(np.array(target).reshape(1, -1))
-        outputs.append(input_images[match_index[1][0][0]])
-
-        if i % batch_size is 0:
-            print('Processed %d of %d...' % (i, input_length))
-
-    return outputs
