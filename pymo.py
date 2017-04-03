@@ -9,7 +9,6 @@ if __name__ == '__main__':
     parser.add_argument('--input-folder', dest='input_folder', required=True)
     parser.add_argument('--grid-rows', dest='grid_rows', required=True)
     parser.add_argument('--grid-cols', dest='grid_cols', required=True)
-    parser.add_argument('--output', dest='output', required=True)
     parser.add_argument('--strategy', dest='strategy', default='lab')
 
     args = parser.parse_args()
@@ -24,8 +23,6 @@ if __name__ == '__main__':
 
     random.shuffle(input_images)
 
-    # resize the input to fit original image size
-    resize_input = True
     reuse_images = True
 
     grid_rows = int(args.grid_rows)
@@ -34,7 +31,7 @@ if __name__ == '__main__':
     # which algorithm to use
     strategy = args.strategy
 
-    output = '%s_%s.png' % (args.output, strategy)
+    output = '%s_mosaic_%s.png' % (args.input_image[args.input_image.rfind('/')+1:], strategy)
 
     print('Creating photo mosaic...')
 
