@@ -12,13 +12,12 @@ def rgb_to_lab(input_rgb):
             value /= 12.92
         rgb[i] = value * 100
 
-    xyz = []
     # ref_X =  95.047   Observer= 2°, Illuminant= D65
-    xyz[0] = float(round(rgb[0] * 0.4124 + rgb[1] * 0.3576 + rgb[2] * 0.1805, 4)) / 95.047
-    # ref_Y = 100.000
-    xyz[1] = float(round(rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722, 4)) / 100.0
-    # ref_Z = 108.883
-    xyz[2] = float(round(rgb[0] * 0.0193 + rgb[1] * 0.1192 + rgb[2] * 0.9505, 4)) / 108.883
+    xyz = [float(round(rgb[0] * 0.4124 + rgb[1] * 0.3576 + rgb[2] * 0.1805, 4)) / 95.047,
+           # ref_Y = 100.000
+           float(round(rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722, 4)) / 100.0,
+           # ref_Z = 108.883
+           float(round(rgb[0] * 0.0193 + rgb[1] * 0.1192 + rgb[2] * 0.9505, 4)) / 108.883]
 
     for i, value in enumerate(xyz):
         if value > 0.008856:
