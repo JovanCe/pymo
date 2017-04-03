@@ -10,7 +10,7 @@ if __name__ == '__main__':
     parser.add_argument('--grid-rows', dest='grid_rows', required=True)
     parser.add_argument('--grid-cols', dest='grid_cols', required=True)
     parser.add_argument('--output', dest='output', required=True)
-    parser.add_argument('--strategy', dest='strategy', default='argb')
+    parser.add_argument('--strategy', dest='strategy', default='lab')
 
     args = parser.parse_args()
 
@@ -31,10 +31,10 @@ if __name__ == '__main__':
     grid_rows = int(args.grid_rows)
     grid_cols = int(args.grid_cols)
 
-    output = '%s.png' % args.output
-
     # which algorithm to use
     strategy = args.strategy
+
+    output = '%s_%s.png' % (args.output, strategy)
 
     print('Creating photo mosaic...')
 
@@ -51,7 +51,7 @@ if __name__ == '__main__':
         for img in input_images:
             img.thumbnail(dims)
 
-    mosaic_image = generate_photo_mosaic(target_image, input_images, grid_rows, grid_cols, reuse_images)
+    mosaic_image = generate_photo_mosaic(target_image, input_images, grid_rows, grid_cols, reuse_images, strategy)
     mosaic_image.save(output, 'PNG')
 
     print("Saved mosaic to %s" % output)

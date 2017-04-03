@@ -1,7 +1,7 @@
 import os
 from PIL import Image
 
-from pymo.strategies import argb, alab
+from pymo.strategies import get_output_tiles
 
 
 def image_list(image_dir):
@@ -40,9 +40,9 @@ def image_grid(images, rows, cols):
     return grid_img
 
 
-def generate_photo_mosaic(input_image, input_images, grid_rows, grid_cols, reuse_images=False, strategy=alab):
+def generate_photo_mosaic(input_image, input_images, grid_rows, grid_cols, reuse_images=False, strategy='lab'):
     input_tiles = tile_matrix(input_image, grid_rows, grid_cols)
-    outputs = strategy(input_tiles, input_images, reuse_images)
+    outputs = get_output_tiles(input_tiles, input_images, reuse_images, strategy)
     mosaic_image = image_grid(outputs, grid_rows, grid_cols)
 
     return mosaic_image
