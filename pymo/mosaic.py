@@ -21,29 +21,32 @@ def image_list(image_dir):
     return images
 
 
-def tile_matrix(image, rows, cols):
-    w, h = int(image.size[0] / cols), int(image.size[1] / rows)
-    return [image.crop((i * w, j * h, (i + 1) * w, (j + 1) * h)) for j in range(rows) for i in range(cols)]
+def tile_matrix(image, tile_height, tile_width, rows, cols):
+    return [image.crop((i * tile_width, j * tile_height, (i + 1) * tile_width, (j + 1) * tile_height)) for j in
+            range(rows) for i in range(cols)]
 
 
-def image_grid(images, rows, cols):
-    width = max([img.size[0] for img in images])
-    height = max([img.size[1] for img in images])
+def image_grid(images, tile_height, tile_width, rows, cols):
+    grid_img = Image.new('RGB', (cols * tile_width, rows * tile_height))
 
-    grid_img = Image.new('RGB', (cols * width, rows * height))
-    
     for i, image in enumerate(images):
         row = int(i / cols)
         col = i - cols * row
-        grid_img.paste(image, (col * width, row * height))
+        grid_img.paste(image, (col * tile_width, row * tile_height))
 
     return grid_img
 
 
-def generate_photo_mosaic(input_image, input_images, grid_rows, grid_cols, reuse_images=False, strategy='lab'):
-    input_tiles = tile_matrix(input_image, grid_rows, grid_cols)
+def generate_photo_mosaic(target_image, input_images, grid_rows, grid_cols, reuse_images=False, strategy='lab'):
+    tile_width = int(target_image.size[0] / grid_cols)
+    tile_height = int(target_image.size[1] / grid_rows)
+
+    for image in input_images:
+        image.thumbnail((tile_width, tile_height))
+
+    input_tiles = tile_matrix(target_image, tile_height, tile_width, grid_rows, grid_cols)
     outputs = get_output_tiles(input_tiles, input_images, reuse_images, strategy)
-    mosaic_image = image_grid(outputs, grid_rows, grid_cols)
+    mosaic_image = image_grid(outputs, tile_height, tile_width, grid_rows, grid_cols)
 
     return mosaic_image
 

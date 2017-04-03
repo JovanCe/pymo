@@ -40,14 +40,6 @@ if __name__ == '__main__':
             print('Insufficient number of images.')
             exit()
 
-    if resize_input:
-        print('Resizing images...')
-        dims = (int(target_image.size[0] / grid_cols),
-                int(target_image.size[1] / grid_rows))
-
-        for img in input_images:
-            img.thumbnail(dims)
-
     mosaic_image = generate_photo_mosaic(target_image, input_images, grid_rows, grid_cols, reuse_images, strategy)
     mosaic_image.save(output, 'PNG')
 
